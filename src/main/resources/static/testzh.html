@@ -18,10 +18,16 @@
     function connect() {
         var socket = new SockJS('/my');
         stompClient = Stomp.over(socket);
-        stompClient.connect({"username":"li"}, function () {
-            stompClient.subscribe('/user/li/chart', function (data) {
+        stompClient.connect({"myname":"zh"}, function () {
+            stompClient.subscribe('/topic/notice', function (data) {
                 document.getElementById('name').value = data.body;
-            },{"username":"li"});
+            });
+            stompClient.subscribe('/user/topic/chart', function (data) {
+                document.getElementById('name').value = data.body;
+            },{"myname":"zh"});
+            stompClient.subscribe('/user/zh/chart', function (data) {
+                document.getElementById('name').value = data.body;
+            },{"myname":"zh"});
         });
         setConnected(true);
     }
@@ -34,7 +40,13 @@
     }
     // 向‘/app/change-notice’服务端发送消息
     function sendName() {
-        stompClient.send("/app/sendToUser",{"username":"li"},JSON.stringify({"name":"wang","value":document.getElementById('name').value}));
+        stompClient.send("/app/sendToUser",{"myname":"zh"});
+    }
+    function sendli() {
+        stompClient.send("/app/sendToOne",{"myname":"zh"}, JSON.stringify({"name":"li","value":document.getElementById('name').value}));
+    }
+    function sendwang() {
+        stompClient.send("/app/sendToOne",{"myname":"zh"}, JSON.stringify({"name":"wang","value":document.getElementById('name').value}));
     }
 </script>
 <body>
@@ -47,7 +59,9 @@
             <p>
                 <textarea id="name" rows="5"></textarea>
             </p>
-            <button onclick="sendName();">Send</button>
+            <button onclick="sendName();">订阅</button>
+            <button onclick="sendli();">对li发消息</button>
+            <button onclick="sendwang();">对wang发消息</button>
         </div>
     </div>
 </body>

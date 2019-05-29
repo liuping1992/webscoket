@@ -18,29 +18,35 @@
     function connect() {
         var socket = new SockJS('/my');
         stompClient = Stomp.over(socket);
-        stompClient.connect({"username":"wang"}, function () {
+        stompClient.connect({"myname":"li"}, function () {
             stompClient.subscribe('/topic/notice', function (data) {
                 document.getElementById('name').value = data.body;
             });
-            stompClient.subscribe('/user/wang/chart', function (data) {
+            stompClient.subscribe('/user/topic/chart', function (data) {
                 document.getElementById('name').value = data.body;
-            },{"username":"wang"});
+            },{"myname":"li"});
+            stompClient.subscribe('/user/li/chart', function (data) {
+                document.getElementById('name').value = data.body;
+            },{"myname":"li"});
         });
         setConnected(true);
     }
     // 断开socket连接
     function disconnect() {
-        stompClient.send("/app/sendToUser",{"username":"wang"},JSON.stringify({"name":"li","value":"wang已下线"}));
         if (stompClient != null) {
             stompClient.disconnect();
         }
         setConnected(false);
     }
+    // 向‘/app/change-notice’服务端发送消息
     function sendName() {
-        stompClient.send("/app/sendToUser",{"username":"wang"}, JSON.stringify({"name":"li","value":document.getElementById('name').value}));
+        stompClient.send("/app/sendToUser",{"myname":"li"});
     }
-    function getTime() {
-        stompClient.send("/app/getTime");
+    function sendwang() {
+        stompClient.send("/app/sendToOne",{"myname":"li"}, JSON.stringify({"name":"wang","value":document.getElementById('name').value}));
+    }
+    function sendzh() {
+        stompClient.send("/app/sendToOne",{"myname":"li"}, JSON.stringify({"name":"zh","value":document.getElementById('name').value}));
     }
 </script>
 <body>
@@ -53,8 +59,9 @@
             <p>
                 <textarea id="name" rows="5"></textarea>
             </p>
-            <button onclick="getTime();">GetTime</button>
-            <button onclick="sendName();">SendTo</button>
+            <button onclick="sendName();">订阅</button>
+            <button onclick="sendwang();">对wang发消息</button>
+            <button onclick="sendzh();">对zh发消息</button>
         </div>
     </div>
 </body>

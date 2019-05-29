@@ -40,7 +40,7 @@ public class MyChannelInterceptor implements ChannelInterceptor {
         }
         //判断客户端发出的命令是不是CONNECT
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-            List<String> header = accessor.getNativeHeader("username");
+            List<String> header = accessor.getNativeHeader("myname");
             if (CollectionUtils.isEmpty(header)) {
                 return null;
             }
@@ -48,7 +48,7 @@ public class MyChannelInterceptor implements ChannelInterceptor {
             if (StringUtils.isEmpty(name)) {
                 return null;
             }
-            accessor.setUser(new MyPrincipal().setUsername(name).setSessionId(accessor.getSessionId()));
+            accessor.setUser(new MyPrincipal().setMyname(name).setSessionId(accessor.getSessionId()));
         }
         return message;
     }

@@ -9,13 +9,13 @@ import java.security.Principal;
 @Accessors(chain = true)
 public class MyPrincipal implements Principal {
 
-    private String username;
+    private String myname;
 
     private String sessionId;
 
     @Override
     public String getName() {
         // 支持同一个用户多客户端访问
-        return username +"_"+ sessionId;
+        return myname +"_"+ sessionId;
     }
 }
