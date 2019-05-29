@@ -1,0 +1,7 @@
+server:
+  port: 5000
+#  servlet:
+#    context-path: /my #路径上加的内容
+spring:
+  profiles:
+    active: dev

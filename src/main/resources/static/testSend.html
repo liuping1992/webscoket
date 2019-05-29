@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="/js/sockjs-0.3.4.min.js"></script>
+<script src="/js/stomp.min.js"></script>
+<script>
+    var stompClient = null;
+    function setConnected(connected) {
+        document.getElementById('connect').disabled = connected;
+        document.getElementById('disconnect').disabled = !connected;
+        document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
+        document.getElementById('name').value = '';
+    }
+    // 开启socket连接
+    function connect() {
+        var socket = new SockJS('/my');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({"username":"li"}, function () {
+            stompClient.subscribe('/user/li/chart', function (data) {
+                document.getElementById('name').value = data.body;
+            },{"username":"li"});
+        });
+        setConnected(true);
+    }
+    // 断开socket连接
+    function disconnect() {
+        if (stompClient != null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+    }
+    // 向‘/app/change-notice’服务端发送消息
+    function sendName() {
+        stompClient.send("/app/sendToUser",{"username":"li"},JSON.stringify({"name":"wang","value":document.getElementById('name').value}));
+    }
+</script>
+<body>
+    <div>
+        <div>
+            <button id="connect" onclick="connect();">Connect</button>
+            <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
+        </div>
+        <div id="conversationDiv" style="visibility: hidden">
+            <p>
+                <textarea id="name" rows="5"></textarea>
+            </p>
+            <button onclick="sendName();">Send</button>
+        </div>
+    </div>
+</body>
+</html>
