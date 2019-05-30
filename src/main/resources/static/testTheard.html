@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script>
+    function sleep (time) {
+        var start = Date.now();
+        while (true) {
+            var now = Date.now();
+            // console.log(now);
+            if (now - start > time) {
+                break;
+            }
+        }
+    }
+    function init (){
+        sleep(3000);
+        document.getElementById("name").value = "初始数据";
+        console.log("渲染");
+        setTimeout(function () {
+            sleep(3000);
+            document.getElementById("name").rows = "10";
+            console.log("二次渲染");
+            setTimeout(function () {
+                sleep(3000);
+                document.getElementById("name").value = "花费多少给加班费的设备的妇女捷克大使馆";
+                console.log("最后渲染");
+            },0)
+        },0)
+    }
+    var i = 0;
+    function init2 (){
+        if (i<10) {
+            i++;
+            sleep(1000);
+            var a = Date.now();
+            document.getElementById("name").value = a;
+            setTimeout(init2, 0);
+        }
+    }
+</script>
+<body>
+    <div>
+        <p>
+            <textarea id="name" rows="5"></textarea>
+        </p>
+        <button id="connect" onclick="init2();">Connect</button>
+    </div>
+</body>
+</html>

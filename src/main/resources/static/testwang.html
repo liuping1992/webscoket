@@ -14,38 +14,46 @@
         document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
         document.getElementById('name').value = '';
     }
+    var header = {"myname":"wang"};
     // 开启socket连接
     function connect() {
-        var socket = new SockJS('/my');
+        var socket = new SockJS('http://192.168.2.243:5000/my');
         stompClient = Stomp.over(socket);
-        stompClient.connect({"myname":"wang"}, function () {
+        stompClient.heartbeat.outgoing = 20000;
+        stompClient.connect(header, function () {
+            setConnected(true);
             stompClient.subscribe('/topic/notice', function (data) {
                 document.getElementById('name').value = data.body;
             });
             stompClient.subscribe('/user/topic/chart', function (data) {
                 document.getElementById('name').value = data.body;
-            },{"myname":"wang"});
-            stompClient.subscribe('/user/wang/chart', function (data) {
-                document.getElementById('name').value = data.body;
-            },{"myname":"wang"});
+                // data.ack();
+            });
+            // stompClient.subscribe('/user/wang/chart', function (data) {
+            //     document.getElementById('name').value = data.body;
+            // },{"myname":"wang"});
+        }, function () {
+            document.getElementById('name').value = "断线了";
+            setTimeout(function () {
+                connect();
+            },5000);
         });
-        setConnected(true);
     }
     // 断开socket连接
     function disconnect() {
         if (stompClient != null) {
             stompClient.disconnect();
+            setConnected(false);
         }
-        setConnected(false);
     }
     function sendName() {
-        stompClient.send("/app/sendToUser",{"myname":"wang"});
+        stompClient.send("/app/sendToUser",header);
     }
     function sendli() {
-        stompClient.send("/app/sendToOne",{"myname":"wang"}, JSON.stringify({"name":"li","value":document.getElementById('name').value}));
+        stompClient.send("/app/sendToOne",header, JSON.stringify({"name":"li","value":document.getElementById('name').value}));
     }
     function sendzh() {
-        stompClient.send("/app/sendToOne",{"myname":"wang"}, JSON.stringify({"name":"zh","value":document.getElementById('name').value}));
+        stompClient.send("/app/sendToOne",header, JSON.stringify({"name":"zh","value":document.getElementById('name').value}));
     }
 </script>
 <body>

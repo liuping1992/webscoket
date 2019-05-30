@@ -16,6 +16,6 @@ public class MyPrincipal implements Principal {
     @Override
     public String getName() {
         // 支持同一个用户多客户端访问
-        return myname +"_"+ sessionId;
+        return myname;
     }
 }

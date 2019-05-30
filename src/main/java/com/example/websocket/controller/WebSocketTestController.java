@@ -6,9 +6,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,8 +16,6 @@ public class WebSocketTestController {
 
     public static Map<String, MyPrincipal> users = new ConcurrentHashMap<>();
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     @MessageMapping("/sendToUser")
     @SendToUser("/topic/chart")
     public String sendToUser(MyPrincipal principal){
@@ -30,7 +25,7 @@ public class WebSocketTestController {
 
     @MessageMapping("/sendToOne")
     public void sendToOne(Say say){
-        simpMessagingTemplate.convertAndSendToUser(say.getName(), "/chart", say.getValue());
+        simpMessagingTemplate.convertAndSendToUser(say.getName(), "/topic/chart", say.getValue());
     }
 
 }

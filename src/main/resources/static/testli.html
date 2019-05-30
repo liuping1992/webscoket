@@ -14,20 +14,21 @@
         document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
         document.getElementById('name').value = '';
     }
+    var header = {"myname":"li"};
     // 开启socket连接
     function connect() {
         var socket = new SockJS('/my');
         stompClient = Stomp.over(socket);
-        stompClient.connect({"myname":"li"}, function () {
+        stompClient.connect(header, function () {
             stompClient.subscribe('/topic/notice', function (data) {
                 document.getElementById('name').value = data.body;
             });
             stompClient.subscribe('/user/topic/chart', function (data) {
                 document.getElementById('name').value = data.body;
-            },{"myname":"li"});
-            stompClient.subscribe('/user/li/chart', function (data) {
-                document.getElementById('name').value = data.body;
-            },{"myname":"li"});
+            },header);
+            // stompClient.subscribe('/user/li/chart', function (data) {
+            //     document.getElementById('name').value = data.body;
+            // },{"myname":"li"});
         });
         setConnected(true);
     }
@@ -40,13 +41,13 @@
     }
     // 向‘/app/change-notice’服务端发送消息
     function sendName() {
-        stompClient.send("/app/sendToUser",{"myname":"li"});
+        stompClient.send("/app/sendToUser",header);
     }
     function sendwang() {
-        stompClient.send("/app/sendToOne",{"myname":"li"}, JSON.stringify({"name":"wang","value":document.getElementById('name').value}));
+        stompClient.send("/app/sendToOne",header, JSON.stringify({"name":"wang","value":document.getElementById('name').value}));
     }
     function sendzh() {
-        stompClient.send("/app/sendToOne",{"myname":"li"}, JSON.stringify({"name":"zh","value":document.getElementById('name').value}));
+        stompClient.send("/app/sendToOne",header, JSON.stringify({"name":"zh","value":document.getElementById('name').value}));
     }
 </script>
 <body>
