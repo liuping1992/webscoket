@@ -17,7 +17,7 @@
     var header = {"myname":"li"};
     // 开启socket连接
     function connect() {
-        var socket = new SockJS('/my');
+        var socket = new SockJS('http://47.103.41.208:5000/my');
         stompClient = Stomp.over(socket);
         stompClient.connect(header, function () {
             stompClient.subscribe('/topic/notice', function (data) {
