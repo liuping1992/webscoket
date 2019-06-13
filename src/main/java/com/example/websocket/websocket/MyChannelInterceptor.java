@@ -1,6 +1,6 @@
-package com.example.websocket;
+package com.example.websocket.websocket;
 
-import com.example.websocket.controller.MyPrincipal;
+import com.example.websocket.websocket.controller.MyPrincipal;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -10,7 +10,6 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.security.Principal;
 import java.util.List;
 
 /**

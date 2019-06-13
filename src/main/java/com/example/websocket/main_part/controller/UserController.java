@@ -5,6 +5,7 @@ import com.example.websocket.main_part.request.UserRequest;
 import com.example.websocket.main_part.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,8 +48,13 @@ public class UserController {
 
     @ApiOperation(value = "用户登录")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ResponseEntity login(@Validated(UserRequest.Login.class) @RequestBody UserRequest userRequest){
+    public ResponseEntity login(@Validated(UserRequest.Login.class) @RequestBody UserRequest userRequest) throws Exception {
         return new ResponseEntity(userService.login(userRequest), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/error",method = RequestMethod.GET)
+    public void error() throws Exception {
+        throw new UnauthenticatedException();
     }
 }
 

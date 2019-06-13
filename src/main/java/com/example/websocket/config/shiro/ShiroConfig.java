@@ -22,7 +22,7 @@ public class ShiroConfig {
 	public static final Long SESSION_TIME_OUT = 3600 * 1000L;
 
 	@Bean
-	public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
+	public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setLoginUrl("/main_part/user/login");
 		shiroFilterFactoryBean.setSecurityManager(securityManager);

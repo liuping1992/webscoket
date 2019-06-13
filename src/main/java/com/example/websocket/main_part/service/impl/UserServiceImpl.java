@@ -41,18 +41,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public UserResponse login(UserRequest userRequest) {
+    public UserResponse login(UserRequest userRequest) throws Exception{
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken();
         token.setUsername(userRequest.getUsername());
         token.setPassword(userRequest.getPassword().toCharArray());
-        try {
-            subject.login(token);
-        } catch (UnknownAccountException a) {
-            throw new RuntimeException("账号错误");
-        } catch (IncorrectCredentialsException e) {
-            throw new RuntimeException("密码错误");
-        }
+        subject.login(token);
         User user = super.getOne(new QueryWrapper<User>().lambda().eq(User::getUsername,userRequest.getUsername()));
         UserResponse response = new UserResponse();
         BeanUtils.copyProperties(user,response);

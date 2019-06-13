@@ -19,6 +19,6 @@ public interface IUserService extends IService<User> {
 
     void modify(UserRequest userRequest);
 
-    UserResponse login(UserRequest userRequest);
+    UserResponse login(UserRequest userRequest) throws Exception;
 
 }
