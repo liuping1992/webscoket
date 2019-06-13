@@ -29,13 +29,13 @@ public class UserRequest extends BaseRequest {
     /**
      * 用户名/账号
      */
-    @NotBlank(groups = {Add.class})
+    @NotBlank(groups = {Add.class,Login.class})
     private String username;
 
     /**
      * 密码
      */
-    @NotBlank(groups = {Add.class})
+    @NotBlank(groups = {Add.class,Login.class})
     private String password;
 
     /**
@@ -48,5 +48,8 @@ public class UserRequest extends BaseRequest {
      */
     private String head;
 
+    public interface Login{
+
+    }
 
 }

@@ -33,9 +33,22 @@ public class UserController {
 
     @ApiOperation(value = "新增用户",notes = "用于用户的新增")
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public ResponseEntity add(@Validated(BaseRequest.Add.class) @RequestBody UserRequest userRequest){
+    public ResponseEntity add(@Validated(UserRequest.Add.class) @RequestBody UserRequest userRequest){
         userService.add(userRequest);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "修改用户",notes = "用于用户的信息修改")
+    @RequestMapping(value = "/modify",method = RequestMethod.POST)
+    public ResponseEntity modify(@Validated(UserRequest.Update.class) @RequestBody UserRequest userRequest){
+        userService.modify(userRequest);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "用户登录")
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public ResponseEntity login(@Validated(UserRequest.Login.class) @RequestBody UserRequest userRequest){
+        return new ResponseEntity(userService.login(userRequest), HttpStatus.OK);
     }
 }
 
