@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="/js/jquery-3.4.1.min.js"></script>
+<script>
+    var address;
+    function test () {
+        $.ajax({
+            type: "GET",
+            url: "http://"+address+":5000/jsonpTest",
+            dataType: "json",
+            success: function(data){
+                set (data);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                console.log(XMLHttpRequest)
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert('fail');
+            }
+        })
+    }
+    function noAjaxTest (){
+        var url = "http://"+address+":5000/jsonpTest?callname=flightHandler";
+        // 创建script标签，设置其属性
+        var script = document.createElement('script');
+        script.setAttribute('src', url);
+        // 把script标签加入head，此时调用开始
+        document.getElementsByTagName('head')[0].appendChild(script);
+    }
+    function flightHandler(data){
+        console.log("noAjaxTest  ",data)
+        set (data);
+    };
+    function ajaxTest () {
+        $.ajax({
+            type: "GET",
+            url: "http://"+address+":5000/jsonpTest",
+            data: {callname:"add"},
+            dataType: "script",
+            success: function(data){
+
+            },
+            error: function(){
+                alert('fail');
+            }
+        })
+    }
+    function add(data){
+        console.log("ajaxTest  ",data)
+        set (data);
+    }
+    function jsonpTest () {
+        $.ajax({
+            url: "http://"+address+":5000/jsonpTest",
+            dataType: "jsonp",
+            jsonp: "callname",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+            // jsonpCallback:"flightHandler",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写"?"，jQuery会自动为你处理数据
+            success: function(data){
+                console.log("jsonp",data)
+                set (data);
+            },
+            error: function(){
+                alert('fail');
+            }
+        })
+    }
+    function set (data) {
+        if (data && data.name && data.age) document.getElementById('name').value = '姓名：'+data.name+'\n'+'年龄：'+data.age;
+        else document.getElementById('name').value = '';
+    }
+    function setAddress () {
+        address = document.getElementById('name').value;
+    }
+</script>
+<body>
+    <div>
+        <button onclick="set();">清除数据</button>
+        <button onclick="setAddress();">设置地址</button>
+        <p>
+            <button onclick="test();">测试跨域(输入地址)</button>
+            <button onclick="noAjaxTest();">不使用ajax的script调用</button>
+        </p>
+        <p>
+            <button onclick="ajaxTest();">使用ajax的script调用</button>
+            <button onclick="jsonpTest();">使用ajax的jsonp调用</button>
+        </p>
+        <p><textarea id="name" rows="5"></textarea></p>
+    </div>
+</body>
+</html>
