@@ -1,4 +1,4 @@
-package com.example.websocket.test;
+package com.example.websocket.frame;
 
 import javax.swing.*;
 import java.awt.*;
