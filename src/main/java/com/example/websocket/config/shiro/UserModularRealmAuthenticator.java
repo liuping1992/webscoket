@@ -1,10 +1,9 @@
-package com.hanren.admin.config.shiro;
+package com.example.websocket.config.shiro;
 
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.http.auth.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;

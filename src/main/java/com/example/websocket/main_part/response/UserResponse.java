@@ -40,7 +40,7 @@ public class UserResponse {
     private String head;
 
     /**
-     * 头像
+     *
      */
     private String token;
 

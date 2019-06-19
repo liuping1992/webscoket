@@ -1,4 +1,4 @@
-package com.hanren.admin.config.shiro;
+package com.example.websocket.config.shiro;
 
 import java.io.IOException;
 

@@ -1,6 +1,7 @@
 package com.example.websocket.main_part.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.websocket.config.shiro.UserToken;
 import com.example.websocket.main_part.entity.User;
 import com.example.websocket.main_part.dao.UserMapper;
 import com.example.websocket.main_part.request.UserRequest;
@@ -43,9 +44,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public UserResponse login(UserRequest userRequest) throws Exception{
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken();
-        token.setUsername(userRequest.getUsername());
-        token.setPassword(userRequest.getPassword().toCharArray());
+        UserToken token = new UserToken(userRequest.getUsername(), userRequest.getPassword(), "Enterprise");
         subject.login(token);
         User user = super.getOne(new QueryWrapper<User>().lambda().eq(User::getUsername,userRequest.getUsername()));
         UserResponse response = new UserResponse();

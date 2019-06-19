@@ -93,6 +93,7 @@ public class SystemExceptionHandler {
         }
         // 其他异常
         else {
+            e.printStackTrace();
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             errorMsg = new ErrorMsg(String.valueOf(httpStatus.value()), "系统错误:"+e.getLocalizedMessage());
         }
